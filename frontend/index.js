@@ -11,11 +11,7 @@ async function changeChat(userInput){
         headers : {
             'Content-Type': 'application/json'
         }})
-
-        console.log(responce)
         const result = await responce.json()
-        console.log(result)
-        
         container.textContent = result.text
 
     }catch(err){

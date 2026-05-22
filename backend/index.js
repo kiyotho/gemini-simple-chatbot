@@ -16,7 +16,10 @@ const models = [
 ]
 
 
-
+// const r1 = readline.createInterface({
+//   input: process.stdin, 
+//   output: process.stdout
+// })
 
 
 
@@ -187,4 +190,3 @@ const server = http.createServer(async (req, res) => {
 })
 
 server.listen(PORT, () => console.log(`Server is listening at the Port: ${PORT}`))
-

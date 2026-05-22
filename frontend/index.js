@@ -12,7 +12,8 @@ async function changeChat(userInput){
             'Content-Type': 'application/json'
         }})
         const result = await responce.json()
-        container.textContent = result.text
+        const childChatHtml = `<div class='chatbot-res'>${marked.parse(result.text)}</div>`
+        container.insertAdjacentHTML('beforeend', childChatHtml)
 
     }catch(err){
         console.log(err)
@@ -23,6 +24,8 @@ async function changeChat(userInput){
 buttonEl.addEventListener('click', () => {
     const value = inputEl.value
     inputEl.value = ''
+    const childUserHtml = `<div class='user-res'>${value}</div>`
+    container.insertAdjacentHTML('beforeend', childUserHtml)
     changeChat(value)
 
 })

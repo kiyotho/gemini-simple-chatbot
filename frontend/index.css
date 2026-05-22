@@ -1,6 +1,6 @@
 body{
-    background-color: rgb(57, 56, 56);
-
+    background-color: #302f2f;
+    margin-bottom: 200px
 }
 
 .input-contianer{
@@ -47,6 +47,44 @@ textarea {
   overflow-y: auto;
 
 }
+
+
+#container{
+    color: white;
+    width: 850px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-res{
+    background-color: rgb(35, 34, 34);
+    width: fit-content;
+    max-width: 800px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin-left: auto;
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.chatbot-res{
+    background-color: transparent;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+#input-box{
+    background-color: #302f2f;
+    padding: 30px;
+    position: fixed; 
+    bottom: 30px;
+    left: 0; 
+    right: 0; 
+    margin: auto;
+}
+
 
 textarea::-webkit-scrollbar {
   width: 4px;

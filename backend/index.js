@@ -16,13 +16,6 @@ const models = [
 ]
 
 
-// const r1 = readline.createInterface({
-//   input: process.stdin, 
-//   output: process.stdout
-// })
-
-
-
 const data = await fs.readFile('history.txt', 'utf-8')
 history = JSON.parse(data)
 

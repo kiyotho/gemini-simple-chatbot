@@ -22,6 +22,12 @@ async function changeChat(userInput){
 
 buttonEl.addEventListener('click', () => {
     const value = inputEl.value
+    inputEl.value = ''
     changeChat(value)
 
+})
+
+inputEl.addEventListener('input', () => {
+  inputEl.style.height = 'auto'
+  inputEl.style.height = inputEl.scrollHeight + 'px'
 })

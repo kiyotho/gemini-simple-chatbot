@@ -31,3 +31,11 @@ inputEl.addEventListener('input', () => {
   inputEl.style.height = 'auto'
   inputEl.style.height = inputEl.scrollHeight + 'px'
 })
+
+
+inputEl.addEventListener('keydown', (event) => {
+    if(event.key === 'Enter' && !event.shiftKey){
+        event.preventDefault()
+        buttonEl.click()
+    }
+})

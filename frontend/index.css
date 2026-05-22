@@ -6,7 +6,7 @@ body{
 .input-contianer{
     display: flex; 
     flex-direction: column;
-    width: 500px;
+    width: 900px;
     background-color: rgb(71, 71, 71);
     padding: 10px;
     border-radius: 20px;
@@ -32,6 +32,7 @@ body{
 
 
 textarea {
+
   background: transparent;
   border: none;
   outline: none;
@@ -44,6 +45,7 @@ textarea {
   box-sizing: border-box;
   max-height: 200px;
   overflow-y: auto;
+
 }
 
 textarea::-webkit-scrollbar {

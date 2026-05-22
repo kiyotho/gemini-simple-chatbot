@@ -11,7 +11,7 @@ let history = []
 let state = ''
 
 const models = [
-  {name: 'gemini-3-flash-preview', outOfLimit: false, unavailable: false}, 
+  {name: 'gemini-3-flash-preview', outOfLimit: true, unavailable: false}, 
   {name: 'gemini-3.1-flash-lite', outOfLimit: false, unavailable: false}
 ]
 
@@ -41,7 +41,7 @@ async function main(){
     
     else{
       try{
-        return result = await ai.models.generateContent({
+        const result = ai.models.generateContentStream({
           model: model.name, 
           config: {
             'systemInstruction' : 'You are a brutally honest Genius. respond to the prompts honestly'
@@ -49,12 +49,18 @@ async function main(){
           contents : history
         })
 
+        return result
         
       } catch(err) {
-        if(err.status === 429){
+        const errorData = JSON.parse(err.message)
+        const code = errorData.error.code
+        console.log(errorData)
+        console.log(code)
+
+        if(code === 429){
           model.outOfLimit = true
           continue
-        } else if(err.status === 503) {
+        } else if(code === 503) {
           model.unavailable = true
           continue
         }
@@ -69,7 +75,8 @@ async function main(){
   }
 }
 
-async function renderChat(userInput){
+async function renderChat(userInput, res){
+
 
   if(history.length > summaryLength){
 
@@ -104,16 +111,24 @@ async function renderChat(userInput){
     parts: [{ text: userInput.text }]
   })
 
-  const resultGemini = await main()
+  res.setHeader("Content-Type", "application/json")
+
+  let resultGemini = ""
+
+  const stream = await main()
+
+  for await(const chunk of stream){
+    res.write(chunk.text)
+    resultGemini += chunk.text
+  }
+  res.end()
 
   history.push({
     role: "model", 
-    parts : [{text : resultGemini.text}]
+    parts : [{text : resultGemini}]
   })
 
   await fs.writeFile('history.txt', JSON.stringify(history))
-  console.log(resultGemini)
-  return resultGemini
 }
 
 
@@ -125,6 +140,10 @@ async function getBody(req){
   })
 
   return result
+}
+
+async function getHistory(){
+  return await fs.readFile('history.txt', 'utf-8')
 }
 
 const PORT = 8000
@@ -144,7 +163,6 @@ const server = http.createServer(async (req, res) => {
 
   if(req.url === '/returnchat' && req.method === 'GET'){
     const result = await renderChat()
-    res.setHeader("Content-Type", "application/json")
     
     res.end(JSON.stringify({ text: result.text }))
 
@@ -153,11 +171,16 @@ const server = http.createServer(async (req, res) => {
   else if (req.url === '/returnchat' && req.method === 'POST'){
     const body = await getBody(req)
 
-    const result = await renderChat(body)
-    res.setHeader("Content-Type", "application/json")
+    renderChat(body, res)
     
-    res.end(JSON.stringify({ text: result.text }))
-    
+  } 
+
+  else if(req.url ==='/returnhistory' && req.method === 'GET'){
+    const history = await getHistory()
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify(history))
+    console.log(history)
+    res.statusCode = 200
   }
   
   else{
@@ -167,3 +190,4 @@ const server = http.createServer(async (req, res) => {
 })
 
 server.listen(PORT, () => console.log(`Server is listening at the Port: ${PORT}`))
+

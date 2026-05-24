@@ -25,12 +25,9 @@ body{
   left: 0;
   width: 100%;
   padding: 15.2px;
-  
-  /* Matches your exact dark theme background color */
   background-color: #302f2f; 
-  
-  /* Ensures it sits on top of the scrolling text */
   z-index: 50; 
+  
 }
 
 .clear-chat{

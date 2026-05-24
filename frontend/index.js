@@ -2,8 +2,9 @@
 const container = document.getElementById('container')
 const inputEl = document.getElementById('input-el')
 const buttonEl = document.getElementById('button-el')
+const clearChat = document.getElementById('clear-chat')
 
-renderHistory()
+await renderHistory()
 async function changeChat(userInput){
 
     try{
@@ -15,9 +16,13 @@ async function changeChat(userInput){
         }})
 
         const reader = responce.body.getReader()
-        const decoder = new TextDecoder()
+        const decoder = new TextDecoder('utf-8', { fatal: false })
 
         let data = ''
+
+        const chatDiv = document.createElement('div')
+        chatDiv.classList.add('chatbot-res')
+        container.appendChild(chatDiv)
 
         while(true){
 
@@ -25,15 +30,13 @@ async function changeChat(userInput){
 
             if(done) break 
 
-            const chunk = decoder.decode(value)
+            const chunk = decoder.decode(value, {stream : true})
             data += chunk
-            console.log(chunk)
+            
+            chatDiv.innerHTML = marked.parse(data)
 
         }
 
-        // const result = await responce.json()
-        const childChatHtml = `<div class='chatbot-res'>${marked.parse(data)}</div>`
-        container.insertAdjacentHTML('beforeend', childChatHtml)
 
     }catch(err){
         console.log(err)
@@ -64,8 +67,16 @@ inputEl.addEventListener('keydown', (event) => {
     }
 })
 
+clearChat.addEventListener('click', async() => {
+    console.log('starting clear request....')
+    await fetch('http://localhost:8000/clearhistory')
+    location.reload()
+    
+})
+
 
 async function logHistory(){
+    
     const history = await fetch('http://localhost:8000/returnhistory')
     const chatHistory = await history.json()
     return chatHistory

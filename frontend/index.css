@@ -33,6 +33,22 @@ body{
   z-index: 50; 
 }
 
+.clear-chat{
+    padding: 10px 10px ;
+    background-color: rgb(176, 13, 13);
+    color: white;
+    outline: none;
+    border: none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 100px;
+    position: fixed;
+    top: 20px; 
+    right: 20px;
+
+}
+
 
 #button-el{
     padding: 10px 10px ;

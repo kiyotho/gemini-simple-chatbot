@@ -35,6 +35,8 @@ async function changeChat(userInput){
             
             chatDiv.innerHTML = marked.parse(data)
 
+            container.scrollTop = container.scrollHeight
+
         }
 
 

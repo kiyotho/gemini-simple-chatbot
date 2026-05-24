@@ -16,7 +16,7 @@ export async function main(history, ai){
     
     else{
       try{
-        const result = ai.models.generateContentStream({
+        const result = await ai.models.generateContentStream({
           model: model.name, 
           config: {
             'systemInstruction' : 'You are a brutally honest Genius. respond to the prompts honestly'
@@ -27,21 +27,19 @@ export async function main(history, ai){
         return result
         
       } catch(err) {
-        const errorData = JSON.parse(err.message)
-        const code = errorData.error.code
-        console.log(errorData)
-        console.log(code)
 
-        if(code === 429){
+        const parsed = JSON.parse(err.message)
+
+        if(parsed.error.code === 429){
           model.outOfLimit = true
           continue
-        } else if(code === 503) {
+        } else if(parsed.error.code === 503) {
           model.unavailable = true
           continue
         }
         else{
 
-          throw err
+          console.log('Unparseable error:', err)
 
         }
 

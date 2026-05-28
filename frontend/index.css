@@ -27,7 +27,7 @@ body{
   padding: 15.2px;
   background-color: #302f2f; 
   z-index: 50; 
-  
+
 }
 
 .clear-chat{
@@ -80,6 +80,7 @@ textarea {
 
 
 #container{
+    
     color: white;
     width: 850px; 
     margin-left: auto;

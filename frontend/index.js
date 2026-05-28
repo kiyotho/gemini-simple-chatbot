@@ -5,6 +5,7 @@ const buttonEl = document.getElementById('button-el')
 const clearChat = document.getElementById('clear-chat')
 
 await renderHistory()
+
 async function changeChat(userInput){
 
     try{
@@ -34,8 +35,6 @@ async function changeChat(userInput){
             data += chunk
             
             chatDiv.innerHTML = marked.parse(data)
-
-            container.scrollTop = container.scrollHeight
 
         }
 

@@ -70,7 +70,7 @@ inputEl.addEventListener('keydown', (event) => {
 
 clearChat.addEventListener('click', async() => {
     console.log('starting clear request....')
-    await fetch('http://localhost:8000/clearhistory')
+    await fetch('http://localhost:8000/clearhistory', {method : 'DELETE'})
     location.reload()
     
 })

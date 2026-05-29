@@ -69,7 +69,7 @@ const server = http.createServer(async (req, res) => {
     res.statusCode = 200
   }
 
-  else if(req.url === '/clearhistory' && req.method === "GET"){
+  else if(req.url === '/clearhistory' && req.method === "DELETE"){
 
       clearHistory()
       res.statusCode = 200

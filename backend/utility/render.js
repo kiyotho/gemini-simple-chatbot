@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises'
 
 
-import { main } from "./chat-api-call.js"
+import { main, models } from "./chat-api-call.js"
 import { summarizeChat } from "./summarize-chat.js"
+
 
 const summaryLength = 4
 
@@ -13,6 +14,8 @@ export async function renderChat(userInput, res, history, ai){
 
     await summarizeChat(history, ai)
   }    
+
+  console.log('userInput:', userInput)
 
   history.push({
     role: "user",
@@ -25,17 +28,45 @@ export async function renderChat(userInput, res, history, ai){
 
   const stream = await main(history, ai)
 
-  for await(const chunk of stream){
-    res.write(chunk.text)
-    resultGemini += chunk.text
+  if(!stream){
+    res.end() 
+    return
   }
+
+  try{
+
+    for await(const chunk of stream.result){
+      res.write(JSON.stringify({text : chunk.text}))
+      console.log(chunk)
+      resultGemini += chunk.text
+    }
+    
+
+  } catch(err){
+
+    console.log(err)
+    res.end()
+
+    const parsed = JSON.parse(err.message)
+
+    if(parsed.error.code === 503){
+      for(const model of models){
+        if(model.name === stream.modelUsed){
+          model.unavailable = true
+        }
+      }
+    }
+
+  }
+
   res.end()
   res.statusCode = 200
+
 
   history.push({
     role: "model", 
     parts : [{text : resultGemini}]
   })
 
-  await fs.writeFile('history.txt', JSON.stringify(history))
+  await fs.writeFile('history.txt', JSON.stringify(history, null, 2))
 }

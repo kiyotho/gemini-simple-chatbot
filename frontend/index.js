@@ -32,8 +32,8 @@ async function changeChat(userInput){
             if(done) break 
 
             const chunk = decoder.decode(value, {stream : true})
-            data += chunk
-            
+            data += chunk.text
+            console.log(chunk)            
             chatDiv.innerHTML = marked.parse(data)
 
         }

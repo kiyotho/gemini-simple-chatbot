@@ -1,5 +1,5 @@
 
-const models = [
+export const models = [
   {name: 'gemini-3-flash-preview', outOfLimit: false, unavailable: false}, 
   {name: 'gemini-3.1-flash-lite', outOfLimit: false, unavailable: false}
 ]
@@ -24,7 +24,7 @@ export async function main(history, ai){
           contents : history
         })
 
-        return result
+        return {result : result , modelUsed : model.name}
         
       } catch(err) {
 
@@ -40,6 +40,8 @@ export async function main(history, ai){
         else{
 
           console.log('Unparseable error:', err)
+          throw err
+
 
         }
 

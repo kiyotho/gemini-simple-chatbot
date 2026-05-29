@@ -24,7 +24,7 @@ async function changeChat(userInput){
         const chatDiv = document.createElement('div')
         chatDiv.classList.add('chatbot-res')
         container.appendChild(chatDiv)
-
+        
         while(true){
 
             const {done, value} = await reader.read()
@@ -32,8 +32,7 @@ async function changeChat(userInput){
             if(done) break 
 
             const chunk = decoder.decode(value, {stream : true})
-            data += chunk.text
-            console.log(chunk)            
+            data += chunk    
             chatDiv.innerHTML = marked.parse(data)
 
         }

@@ -37,7 +37,6 @@ export async function renderChat(userInput, res, history, ai){
 
     for await(const chunk of stream.result){
       res.write(chunk.text)
-      console.log(chunk.text)
       resultGemini += chunk.text
     }
     
